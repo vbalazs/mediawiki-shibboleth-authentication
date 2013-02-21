@@ -259,7 +259,7 @@ function SetupShibAuth()
 {
         global $shib_UN;
         global $wgHooks;
-        global $wgAuth;
+        global $wgAuth, $wgUser;
         global $wgCookieExpiration;
 
         if($shib_UN != null){
@@ -268,6 +268,12 @@ function SetupShibAuth()
                 $wgHooks['PersonalUrls'][] = 'ShibActive'; /* Disallow logout link */
                 $wgAuth = new ShibAuthPlugin();
         } else {
+                //force logout if there is only MW session user
+                //prevent incostintent state when there's no Shib session
+                if ($wgUser != null && $wgUser->isLoggedIn()) {
+                        $wgUser->doLogout();
+                }
+
                 $wgHooks['PersonalUrls'][] = 'ShibLinkAdd';
         }
 }
