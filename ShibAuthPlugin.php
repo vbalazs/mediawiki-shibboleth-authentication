@@ -20,7 +20,7 @@
  *      * D.J. Capelis - Developed initial version of the extension
  */
 
-require_once('AuthPlugin.php');
+require_once("$IP/includes/AuthPlugin.php");
 
 class ShibAuthPlugin extends AuthPlugin {
         var $existingUser = false;
@@ -368,7 +368,7 @@ function ShibUserLoadFromSession($user, &$result)
          * most of what you need.  Creating a loginform is a very very small
          * part of this object.
          */
-        require_once('specials/SpecialUserlogin.php');
+        require_once('includes/specials/SpecialUserlogin.php');
 
         //This section contains a silly hack for MW
         global $wgLang;
