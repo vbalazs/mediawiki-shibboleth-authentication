@@ -300,7 +300,7 @@ function ShibLinkAdd(&$personal_urls, $title)
         $personal_urls['SSOlogin'] = array(
                         'text' => $shib_LoginHint,
                         'href' => ($shib_Https ? 'https' :  'http') .'://' . $_SERVER['HTTP_HOST'] .
-                        $shib_AssertionConsumerServiceURL . "/" . $shib_ConsumerPrefix . $shib_WAYF .
+                        $shib_AssertionConsumerServiceURL . "/" . $shib_ConsumerPrefix . "Login" .
                         '?target=' . (isset($_SERVER['HTTPS']) ? 'https' : 'http') .
                         '://' . $_SERVER['HTTP_HOST'] . $pageurl, );
         return true;
@@ -309,14 +309,17 @@ function ShibLinkAdd(&$personal_urls, $title)
 /* Kill logout link */
 function ShibActive(&$personal_urls, $title)
 {
-        global $shib_logout;
+        global $shib_LogoutHint, $shib_Https, $shib_AssertionConsumerServiceURL;
         global $shib_RN;
         global $shib_map_info;
 
-        if($shib_logout == null)
-                $personal_urls['logout'] = null;
-        else
-                $personal_urls['logout']['href'] = $shib_logout;
+        $personal_urls['logout'] = array(
+                'text' => $shib_LogoutHint,
+                'href' => ($shib_Https ? 'https' : 'http') .'://' . $_SERVER['HTTP_HOST'] .
+                $shib_AssertionConsumerServiceURL . "/Logout" .
+                '?return=' . (isset($_SERVER['HTTPS']) ? 'https' : 'http') .
+                '://'. $_SERVER['HTTP_HOST']. "/index.php?title=Special:UserLogout&amp;returnto=" .
+                $title->getPartialURL());
 
         if ($shib_RN && $shib_map_info)
                 $personal_urls['userpage']['text'] = $shib_RN;
