@@ -61,9 +61,10 @@ class ShibAuthPlugin extends AuthPlugin {
          * Modify options in the login template.
          *
          * @param UserLoginTemplate $template
+         * @param String $type 'signup' or 'login'. Added in 1.16.
          * @access public
          */
-        function modifyUITemplate( &$template ) {
+        function modifyUITemplate( &$template, &$type ) {
                 $template->set( 'usedomain', false );
         }
 
@@ -147,11 +148,12 @@ class ShibAuthPlugin extends AuthPlugin {
          * Set the given password in the authentication database.
          * Return true if successful.
          *
+         * @param User $user
          * @param string $password
          * @return bool
          * @access public
          */
-        function setPassword( $password ) {
+        function setPassword( $user, $password ) {
                 global $shib_pretend;
 
                 return $shib_pretend;
@@ -184,12 +186,13 @@ class ShibAuthPlugin extends AuthPlugin {
          * Add a user to the external authentication database.
          * Return true if successful.
          *
-         * @param User $user
-         * @param string $password
-         * @return bool
-         * @access public
+         * @param $user User: only the name should be assumed valid at this point
+         * @param $password String
+         * @param $email String
+         * @param $realname String
+         * @return Boolean
          */
-        function addUser( $user, $password ) {
+        public function addUser( $user, $password, $email = '', $realname = '' ) {
                 return false;
         }
 
@@ -215,10 +218,10 @@ class ShibAuthPlugin extends AuthPlugin {
          * The User object is passed by reference so it can be modified; don't
          * forget the & on your function declaration.
          *
-         * @param User $user
-         * @access public
+         * @param User $user User object.
+         * @param $autocreate Boolean: True if user is being autocreated on login
          */
-        function initUser( &$user, $autocreate ) {
+        function initUser( &$user, $autocreate = false ) {
                 $this->updateUser($user);
         }
 
