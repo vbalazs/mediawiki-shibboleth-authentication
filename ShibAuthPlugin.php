@@ -362,7 +362,7 @@ function ShibUserLoadFromSession($user, &$result)
                 $user->load();
                 $wgAuth->existingUser = true;
                 $wgAuth->updateUser($user); //Make sure password is nologin
-                $user->setupSession();
+                wfSetupSession();
                 $user->setCookies();
                 return true;
         }
@@ -423,7 +423,7 @@ function ShibUserLoadFromSession($user, &$result)
 
         //Finish it off
         $user->saveSettings();
-        $user->setupSession();
+        wfSetupSession();
         $user->setCookies();
         return true;
 }
