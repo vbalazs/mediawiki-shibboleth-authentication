@@ -341,6 +341,10 @@ function ShibUserLoadFromSession($user, &$result)
         global $shib_map_info_existing;
         global $shib_pretend;
 
+        //MW needs usernames in capital!
+        $shib_UN = Title::makeTitleSafe( NS_USER, $shib_UN);
+        $shib_UN = $shib_UN->getText();
+
         ShibKillAA();
 
         //For versions of mediawiki which enjoy calling AutoAuth with null users
