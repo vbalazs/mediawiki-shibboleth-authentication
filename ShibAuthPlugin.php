@@ -1,7 +1,8 @@
 <?php
 
 /**
- * Version 1.2.3 (Works out of box with MW 1.7 or above)
+ * Internal Verson: 10.1.0
+ * Forked from version 1.2.3 (Works out of box with MW 1.7 or above)
  *
  * Authentication Plugin for Shibboleth (http://shibboleth.internet2.edu)
  * Derived from AuthPlugin.php
@@ -14,8 +15,11 @@
  * Documentation at http://www.mediawiki.org/wiki/Extension:Shibboleth_Authentication
  * Project IRC Channel: #sdcolleges on irc.freenode.net
  *
- * Extension Maintainer:
+ * On Github: https://github.com/kir-dev/mediawiki-shibboleth-authentication
+ *
+ * Extension Maintainers:
  *      * Steven Langenaken - Added assertion support, more robust https checking, bugfixes for lazy auth, ShibUpdateUser hook
+ *      * Balazs Varga - bugfixes, customizations
  * Extension Developers:
  *      * D.J. Capelis - Developed initial version of the extension
  */
