@@ -105,7 +105,7 @@ class ShibAuthPlugin extends AuthPlugin {
          * @access public
          */
         function updateUser( &$user ) {
-                wfRunHooks('ShibUpdateUser', array($this->existingUser, $user));
+                wfRunHooks('ShibUpdateUser', array($this->existingUser, &$user));
 
                 //For security, set password to a non-existant hash.
                 if ($user->mPassword != "nologin"){
