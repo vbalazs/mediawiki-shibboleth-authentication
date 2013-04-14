@@ -70,6 +70,13 @@ function NoLoginLinkOnMainPage( &$personal_urls ){
 }
 $wgHooks['PersonalUrls'][]='NoLoginLinkOnMainPage';
 
+# to disable factory user login
+function disableUserLoginSpecialPage(&$list) {
+        unset($list['Userlogin']);
+        return true;
+}
+$wgHooks['SpecialPage_initList'][]='disableUserLoginSpecialPage';
+
 // Activate Shibboleth Plugin
 SetupShibAuth();
 ~~~
