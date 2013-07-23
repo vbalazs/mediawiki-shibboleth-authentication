@@ -388,7 +388,7 @@ function ShibUserLoadFromSession($user, &$result)
          * most of what you need.  Creating a loginform is a very very small
          * part of this object.
          */
-        require_once('includes/specials/SpecialUserlogin.php');
+        require_once("$IP/includes/specials/SpecialUserlogin.php");
 
         //This section contains a silly hack for MW
         global $wgLang;
