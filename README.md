@@ -9,7 +9,7 @@ $wgMinimalPasswordLength = 0;
 // Last portion of the shibboleth WAYF url for lazy sessions.
 // This value is found in your shibboleth.xml file on the setup for your SP
 // WAYF url will look something like: /Shibboleth.sso/WAYF/$shib_WAYF
-$shib_WAYF = "";
+$shib_WAYF = "Login";
 
 //Are you using an old style WAYF (Shib 1.3) or new style Discover Service (Shib 2.x)?
 //Values are WAYF or DS, defaults to WAYF
@@ -26,7 +26,7 @@ $shib_LogoutHint = "Logout";
 
 // Where is the assertion consumer service located on the website?
 // Default: "/Shibboleth.sso"
-$shib_AssertionConsumerServiceURL = "/Shibboleth.sso";
+$shib_AssertionConsumerServiceURL = "";
 
 // Map Real Name to what Shibboleth variable(s)?
 $shib_RN = isset($_SERVER['HTTP_COMMON_NAME']) ? $_SERVER['HTTP_COMMON_NAME'] : null;

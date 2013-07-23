@@ -285,10 +285,9 @@ function SetupShibAuth()
 /* Add login link */
 function ShibLinkAdd(&$personal_urls, $title)
 {
-        global $shib_WAYF, $shib_LoginHint, $shib_Https, $shib_AssertionConsumerServiceURL;
+        global $shib_WAYF, $shib_LoginHint, $shib_Https;
         global $shib_WAYFStyle;
-        if (! isset($shib_AssertionConsumerServiceURL) || $shib_AssertionConsumerServiceURL == '')
-                $shib_AssertionConsumerServiceURL = "/Shibboleth.sso";
+
         if (! isset($shib_Https))
                 $shib_Https = false;
         if (! isset($shib_WAYFStyle))
@@ -304,7 +303,7 @@ function ShibLinkAdd(&$personal_urls, $title)
         $personal_urls['SSOlogin'] = array(
                         'text' => $shib_LoginHint,
                         'href' => ($shib_Https ? 'https' :  'http') .'://' . $_SERVER['HTTP_HOST'] .
-                        $shib_AssertionConsumerServiceURL . "/" . $shib_ConsumerPrefix . "Login" .
+                        getShibAssertionConsumerServiceURL() . "/" . $shib_ConsumerPrefix . $shib_WAYF .
                         '?target=' . (isset($_SERVER['HTTPS']) ? 'https' : 'http') .
                         '://' . $_SERVER['HTTP_HOST'] . $pageurl, );
         return true;
@@ -313,14 +312,14 @@ function ShibLinkAdd(&$personal_urls, $title)
 /* Kill logout link */
 function ShibActive(&$personal_urls, $title)
 {
-        global $shib_LogoutHint, $shib_Https, $shib_AssertionConsumerServiceURL;
+        global $shib_LogoutHint, $shib_Https;
         global $shib_RN;
         global $shib_map_info;
 
         $personal_urls['logout'] = array(
                 'text' => $shib_LogoutHint,
                 'href' => ($shib_Https ? 'https' : 'http') .'://' . $_SERVER['HTTP_HOST'] .
-                $shib_AssertionConsumerServiceURL . "/Logout" .
+                getShibAssertionConsumerServiceURL() . "/Logout" .
                 '?return=' . (isset($_SERVER['HTTPS']) ? 'https' : 'http') .
                 '://'. $_SERVER['HTTP_HOST']. "/index.php?title=Special:UserLogout&amp;returnto=" .
                 $title->getPartialURL());
@@ -329,6 +328,16 @@ function ShibActive(&$personal_urls, $title)
                 $personal_urls['userpage']['text'] = $shib_RN;
 
         return true;
+}
+
+function getShibAssertionConsumerServiceURL() {
+        global $shib_AssertionConsumerServiceURL;
+
+        if (! isset($shib_AssertionConsumerServiceURL) || $shib_AssertionConsumerServiceURL == '') {
+                $shib_AssertionConsumerServiceURL = "/Shibboleth.sso";
+        }
+
+        return $shib_AssertionConsumerServiceURL;
 }
 
 function ShibAutoAuthenticate(&$user) {
