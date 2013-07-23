@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Version 1.2.3 (Works out of box with MW 1.7 or above)
+ * Version 1.2.4 (Works out of box with MW 1.7 or above)
  *
  * Authentication Plugin for Shibboleth (http://shibboleth.internet2.edu)
  * Derived from AuthPlugin.php
@@ -20,7 +20,7 @@
  *      * D.J. Capelis - Developed initial version of the extension
  */
 
-require_once('AuthPlugin.php');
+require_once('includes/AuthPlugin.php');
 
 class ShibAuthPlugin extends AuthPlugin {
         var $existingUser = false;
@@ -63,7 +63,7 @@ class ShibAuthPlugin extends AuthPlugin {
          * @param UserLoginTemplate $template
          * @access public
          */
-        function modifyUITemplate( &$template ) {
+        function modifyUITemplate( &$template, &$type ) {
                 $template->set( 'usedomain', false );
         }
 
@@ -151,7 +151,7 @@ class ShibAuthPlugin extends AuthPlugin {
          * @return bool
          * @access public
          */
-        function setPassword( $password ) {
+        function setPassword( $user, $password ) {
                 global $shib_pretend;
 
                 return $shib_pretend;
@@ -189,7 +189,7 @@ class ShibAuthPlugin extends AuthPlugin {
          * @return bool
          * @access public
          */
-        function addUser( $user, $password ) {
+        function addUser( $user, $password, $email = '', $realname = '' ) {
                 return false;
         }
 
@@ -218,7 +218,7 @@ class ShibAuthPlugin extends AuthPlugin {
          * @param User $user
          * @access public
          */
-        function initUser( &$user, $autocreate ) {
+        function initUser( &$user, $autocreate = false ) {
                 $this->updateUser($user);
         }
 
@@ -246,7 +246,7 @@ function ShibGetAuthHook() {
 $wgExtensionFunctions[] = 'SetupShibAuth';
 $wgExtensionCredits['other'][] = array(
                         'name' => 'Shibboleth Authentication',
-                        'version' => '1.2.3',
+                        'version' => '1.2.4',
                         'author' => "Regents of the University of California, Steven Langenaken",
                         'url' => "http://www.mediawiki.org/wiki/Extension:Shibboleth_Authentication",
                         'description' => "Allows logging in through Shibboleth",
@@ -350,7 +350,7 @@ function ShibUserLoadFromSession($user, &$result)
                 $user->load();
                 $wgAuth->existingUser = true;
                 $wgAuth->updateUser($user); //Make sure password is nologin
-                $user->setupSession();
+                wfSetupSession();
                 $user->setCookies();
                 return true;
         }
@@ -368,7 +368,7 @@ function ShibUserLoadFromSession($user, &$result)
          * most of what you need.  Creating a loginform is a very very small
          * part of this object.
          */
-        require_once('specials/SpecialUserlogin.php');
+        require_once('includes/specials/SpecialUserlogin.php');
 
         //This section contains a silly hack for MW
         global $wgLang;
@@ -411,7 +411,7 @@ function ShibUserLoadFromSession($user, &$result)
 
         //Finish it off
         $user->saveSettings();
-        $user->setupSession();
+        wfSetupSession();
         $user->setCookies();
         return true;
 }
