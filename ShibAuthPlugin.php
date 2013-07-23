@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Internal Verson: 10.1.0
- * Forked from version 1.2.3 (Works out of box with MW 1.7 or above)
+ * Internal Verson: 10.2.0
+ * Forked from version 1.2.4 (Works out of box with MW 1.7 or above)
  *
  * Authentication Plugin for Shibboleth (http://shibboleth.internet2.edu)
  * Derived from AuthPlugin.php
@@ -196,7 +196,7 @@ class ShibAuthPlugin extends AuthPlugin {
          * @param $realname String
          * @return Boolean
          */
-        public function addUser( $user, $password, $email = '', $realname = '' ) {
+        function addUser( $user, $password, $email = '', $realname = '' ) {
                 return false;
         }
 
@@ -253,7 +253,7 @@ function ShibGetAuthHook() {
 $wgExtensionFunctions[] = 'SetupShibAuth';
 $wgExtensionCredits['other'][] = array(
                         'name' => 'Shibboleth Authentication',
-                        'version' => '1.2.3',
+                        'version' => '1.2.4',
                         'author' => "Regents of the University of California, Steven Langenaken",
                         'url' => "http://www.mediawiki.org/wiki/Extension:Shibboleth_Authentication",
                         'description' => "Allows logging in through Shibboleth",
