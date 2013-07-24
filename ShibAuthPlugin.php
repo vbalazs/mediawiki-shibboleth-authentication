@@ -346,6 +346,7 @@ function ShibAutoAuthenticate(&$user) {
 /* Tries to be magical about when to log in users and when not to. */
 function ShibUserLoadFromSession($user, &$result)
 {
+        global $IP;
         global $wgContLang;
         global $wgAuth;
         global $shib_UN;
