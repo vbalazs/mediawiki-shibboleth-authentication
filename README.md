@@ -34,6 +34,10 @@ $shib_RN = isset($_SERVER['HTTP_COMMON_NAME']) ? $_SERVER['HTTP_COMMON_NAME'] : 
 // Map e-mail to what Shibboleth variable?
 $shib_email = isset($_SERVER['HTTP_EMAIL']) ? $_SERVER['HTTP_EMAIL'] : null;
 
+// Field containing groups for the user and field containing the prefix to be searched (and stripped) from wiki groups
+$shib_groups = isset($_SERVER['isMemberOf']) ? $_SERVER['isMemberOf'] : null;
+$shib_group_prefix = "wiki";
+
 // The ShibUpdateUser hook is executed on login.
 // It has two arguments:
 // - $existing: True if this is an existing user, false if it is a new user being added

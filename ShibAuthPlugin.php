@@ -300,12 +300,30 @@ function ShibLinkAdd(&$personal_urls, $title)
         if (! isset($shib_LoginHint))
                 $shib_LoginHint = "Login via Single Sign-on";
 
-        $personal_urls['SSOlogin'] = array(
-                        'text' => $shib_LoginHint,
-                        'href' => ($shib_Https ? 'https' :  'http') .'://' . $_SERVER['HTTP_HOST'] .
-                        getShibAssertionConsumerServiceURL() . "/" . $shib_ConsumerPrefix . $shib_WAYF .
-                        '?target=' . (isset($_SERVER['HTTPS']) ? 'https' : 'http') .
-                        '://' . $_SERVER['HTTP_HOST'] . $pageurl, );
+	if ($shib_WAYFStyle == "Login") {
+		$personal_urls['SSOlogin'] = array(
+			'text' => $shib_LoginHint,
+			'href' => ($shib_Https ? 'https' :  'http') .'://' . $_SERVER['HTTP_HOST'] .
+			$shib_AssertionConsumerServiceURL . "/" . $shib_ConsumerPrefix . $shib_WAYFStyle .
+			'?target=' . (isset($_SERVER['HTTPS']) ? 'https' : 'http') .
+			'://' . $_SERVER['HTTP_HOST'] . $pageurl, );
+	}
+	elseif ($shib_WAYFStyle == "CustomLogin") {
+		$personal_urls['SSOlogin'] = array(
+			'text' => $shib_LoginHint,
+			'href' => ($shib_Https ? 'https' :  'http') .'://' . $_SERVER['HTTP_HOST'] .
+			$shib_AssertionConsumerServiceURL .
+			'?target=' . (isset($_SERVER['HTTPS']) ? 'https' : 'http') .
+			'://' . $_SERVER['HTTP_HOST'] . $pageurl, );
+	}
+	else {
+		$personal_urls['SSOlogin'] = array(
+			'text' => $shib_LoginHint,
+			'href' => ($shib_Https ? 'https' :  'http') .'://' . $_SERVER['HTTP_HOST'] .
+			$shib_AssertionConsumerServiceURL . "/" . $shib_ConsumerPrefix . $shib_WAYF .
+			'?target=' . (isset($_SERVER['HTTPS']) ? 'https' : 'http') .
+			'://' . $_SERVER['HTTP_HOST'] . $pageurl, );
+	}
         return true;
 }
 
@@ -354,6 +372,7 @@ function ShibUserLoadFromSession($user, &$result)
         global $shib_map_info;
         global $shib_map_info_existing;
         global $shib_pretend;
+	global $shib_groups;
 
         //MW needs usernames in capital!
         $shib_UN = Title::makeTitleSafe( NS_USER, $shib_UN);
@@ -382,6 +401,7 @@ function ShibUserLoadFromSession($user, &$result)
                 $wgAuth->updateUser($user); //Make sure password is nologin
                 wfSetupSession();
                 $user->setCookies();
+		ShibAddGroups($user);
                 return true;
         }
 
@@ -443,7 +463,26 @@ function ShibUserLoadFromSession($user, &$result)
         $user->saveSettings();
         wfSetupSession();
         $user->setCookies();
+	ShibAddGroups($user);
         return true;
+}
+function ShibAddGroups($user) {
+	global $shib_groups;
+	global $shib_group_prefix;
+
+	if (isset($shib_groups)) {
+		foreach (explode(';', $shib_groups) as $group) {
+			if (isset($shib_group_prefix) && !empty($shib_group_prefix)) {
+				$vals = explode(":", $group);
+				if ($vals[0] == "wiki") {
+					$user->addGroup($vals[1]);
+				}
+			}
+			else {
+				$user->addGroup($group);
+			}
+		}
+	}
 }
 function ShibKillAA()
 {
