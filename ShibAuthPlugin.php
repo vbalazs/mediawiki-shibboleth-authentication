@@ -470,6 +470,11 @@ function ShibAddGroups($user) {
 	global $shib_groups;
 	global $shib_group_prefix;
 
+	$oldGroups = $user->getGroups();
+        foreach ($oldGroups as $group) {
+                $user->removeGroup($group);
+        }
+
 	if (isset($shib_groups)) {
 		foreach (explode(';', $shib_groups) as $group) {
 			if (isset($shib_group_prefix) && !empty($shib_group_prefix)) {
