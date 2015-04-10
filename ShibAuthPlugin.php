@@ -481,11 +481,10 @@ function ShibAddGroups($user) {
 	if (isset($shib_groups)) {
 		foreach (explode(';', $shib_groups) as $group) {
 			if (isset($shib_group_prefix) && !empty($shib_group_prefix)) {
-				$vals = explode(":", $group);
-				if ($vals[0] == "wiki") {
-					$user->addGroup($vals[1]);
-				}
-			}
+                                if ( substr($group,0,strlen($shib_group_prefix)) == $shib_group_prefix) {
+                                        $user->addGroup(substr($group,(strlen($shib_group_prefix) + 1)));
+                                }
+                        }
 			else {
 				$user->addGroup($group);
 			}
