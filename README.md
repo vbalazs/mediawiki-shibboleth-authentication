@@ -38,6 +38,15 @@ $shib_email = isset($_SERVER['HTTP_EMAIL']) ? $_SERVER['HTTP_EMAIL'] : null;
 $shib_groups = isset($_SERVER['isMemberOf']) ? $_SERVER['isMemberOf'] : null;
 $shib_group_prefix = "wiki";
 
+// Should pre-existing groups be deleted?
+// If groups are fetched only from Shibboleth it should be true
+// if memberships are granted from mediawiki User rights management
+// page, it should be false
+// PLEASE NOTE: with $shib_group_delete = false, in order to revoke
+// a membership it should be deleted both from Shibboleth and 
+// User rights management page!
+$shib_group_delete = false;
+
 // The ShibUpdateUser hook is executed on login.
 // It has two arguments:
 // - $existing: True if this is an existing user, false if it is a new user being added
